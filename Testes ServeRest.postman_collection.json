@@ -1,0 +1,635 @@
+{
+	"info": {
+		"_postman_id": "71a6bd98-bc8a-4bd7-96ea-ef4d783f46a3",
+		"name": "Testes ServeRest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15807140"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsons = pm.response.json();\r",
+									"pm.environment.set(\"token\", jsons.authorization);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 1000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"fulano@qa.com\",\r\n  \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Cadastrar Usuário",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{$randomFullName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"{{$randomPassword}}\",\r\n  \"administrador\": \"true\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/usuarios",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Usuarios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var schema = {\r",
+									"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"quantidade\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"usuarios\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": [\r",
+									"        {\r",
+									"          \"type\": \"object\",\r",
+									"          \"properties\": {\r",
+									"            \"nome\": {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            \"email\": {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            \"password\": {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            \"administrador\": {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            \"_id\": {\r",
+									"              \"type\": \"string\"\r",
+									"            }\r",
+									"          },\r",
+									"          \"required\": [\r",
+									"            \"nome\",\r",
+									"            \"email\",\r",
+									"            \"password\",\r",
+									"            \"administrador\",\r",
+									"            \"_id\"\r",
+									"          ]\r",
+									"        }\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"quantidade\",\r",
+									"    \"usuarios\"\r",
+									"  ]\r",
+									"};\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Validando estrutura do body', function(){\r",
+									"pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/usuarios",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produtos",
+			"item": [
+				{
+					"name": "Listar Produtos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// ✅ Teste 1 - Status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var schema = {\r",
+									"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+									"  \"type\": \"object\",\r",
+									"  \r",
+									"  \"required\": [\"quantidade\", \"produtos\"],\r",
+									"  \r",
+									"  \"properties\": {\r",
+									"    \"quantidade\": {\r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"\r",
+									"    \"produtos\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \r",
+									"      \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"\r",
+									"        \"required\": [\"nome\", \"preco\", \"descricao\", \"quantidade\", \"_id\"],\r",
+									"\r",
+									"        \"properties\": {\r",
+									"          \"nome\": {\r",
+									"            \"type\": \"string\"\r",
+									"          },\r",
+									"          \"preco\": {            \r",
+									"            \"type\": [\"integer\", \"number\"]\r",
+									"          },\r",
+									"          \"descricao\": {\r",
+									"            \"type\": \"string\"\r",
+									"          },\r",
+									"          \"quantidade\": {\r",
+									"            \"type\": \"integer\"\r",
+									"          },\r",
+									"          \"_id\": {\r",
+									"            \"type\": \"string\"\r",
+									"          }\r",
+									"        },\r",
+									"\r",
+									"        // NÃO permite campos inesperados nos produtos\r",
+									"        \"additionalProperties\": false\r",
+									"      }\r",
+									"    }\r",
+									"  },\r",
+									"\r",
+									"  // NÃO permite campos extras no body raiz\r",
+									"  \"additionalProperties\": false\r",
+									"}\r",
+									"\r",
+									"\r",
+									"// ✅ Teste 2 - Validação do contrato - estrutura\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Validando estrutura do body', function(){\r",
+									"pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"})\r",
+									"\r",
+									"// ✅ Teste 3 - Tipos e consistência lógica - tipos\r",
+									"pm.test(\"Tipos e dados básicos dos produtos são válidos\", function () {\r",
+									"  pm.expect(jsonData).to.have.property(\"produtos\").that.is.an(\"array\");\r",
+									"  jsonData.produtos.forEach((produto) => {\r",
+									"    pm.expect(produto.nome).to.be.a(\"string\");\r",
+									"    pm.expect(produto.preco).to.be.a(\"number\");\r",
+									"    pm.expect(produto.quantidade).to.be.a(\"number\");\r",
+									"    pm.expect(produto.descricao).to.be.a(\"string\");\r",
+									"    pm.expect(produto._id).to.be.a(\"string\");\r",
+									"  });\r",
+									"});\r",
+									"\r",
+									"// ✅ Teste 4 - Tempo de resposta - desempenho\r",
+									"pm.test(\"Tempo de resposta menor que 1 segundo\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"// ✅ Teste 5 - Validar Content-Type\r",
+									"pm.test(\"Content-Type header presente e contém application/json\", function () {\r",
+									"  // pega o header (case-insensitive)\r",
+									"  const contentType = pm.response.headers.get('content-type');\r",
+									"  // valida presença\r",
+									"  pm.expect(contentType, \"Header Content-Type ausente\").to.be.a('string');\r",
+									"  // valida substring / aceita charset\r",
+									"  pm.expect(contentType).to.match(/application\\/json/i);\r",
+									"});\r",
+									"\r",
+									"// ✅ Teste 6 - JSON não está vázio\r",
+									"pm.test(\"Body não está vazio\", () => {\r",
+									"    pm.expect(pm.response.text()).to.not.equal(\"\");\r",
+									"});\r",
+									"\r",
+									"// ✅ Teste 7 - Validar tamanho mínimo e máximo de arrays\r",
+									"pm.test(\"Lista de produtos tem pelo menos 1 item\", () => {\r",
+									"    pm.expect(jsonData.produtos.length).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"// ✅ Teste 8 - Validar campos obrigatórios em cada item (redundância saudável)\r",
+									"pm.test(\"Validar campos obrigatórios em cada item\", function () {\r",
+									"    jsonData.produtos.forEach((p) => {\r",
+									"        pm.expect(p).to.have.property(\"nome\");\r",
+									"        pm.expect(p).to.have.property(\"preco\");\r",
+									"        pm.expect(p).to.have.property(\"descricao\");\r",
+									"        pm.expect(p).to.have.property(\"quantidade\");\r",
+									"        pm.expect(p).to.have.property(\"_id\");\r",
+									"    })\r",
+									"});\r",
+									"\r",
+									"// ✅ Teste 9 - Validar valores específicos\r",
+									"pm.test(\"Quantidade deve ser maior ou igual a 0\", () => {\r",
+									"    jsonData.produtos.forEach((p) => {\r",
+									"        pm.expect(p.quantidade).to.be.at.least(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// ✅ Teste 10 - Validar códigos de erro(ESPECÍFICO PARA REQUESTS QUE ESPERAM ERROS)\r",
+									"//pm.test(\"Retorna erro apropriado ao enviar dados inválidos\", () => {\r",
+									"//    if (pm.response.code !== 400) console.log(pm.response.json());\r",
+									"//    pm.expect(pm.response.code).to.equal(400);\r",
+									"//});\r",
+									"\r",
+									"// ✅ Teste 11 - Garantir que nenhum campo venha nulo (quando não deveria)\r",
+									"pm.test(\"Nenhum campo obrigatório vem nulo\", () => {\r",
+									"    jsonData.produtos.forEach(p => {\r",
+									"        pm.expect(p.nome).to.not.be.null;\r",
+									"        pm.expect(p.preco).to.not.be.null;\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// ✅ Teste 12 - Testar ordenação(Nesse teste, não existe ordenação)\r",
+									"//pm.test(\"Produtos estão ordenados por nome\", () => {\r",
+									"//  const nomes = jsonData.produtos.map(p => p.nome);\r",
+									"//  const ordenado = [...nomes].sort();\r",
+									"//  pm.expect(nomes).to.eql(ordenado);\r",
+									"//});\r",
+									"\r",
+									"// ✅ Teste 13 - Verificar se não há duplicados\r",
+									"pm.test(\"Não existem produtos duplicados\", () => {\r",
+									"    const ids = jsonData.produtos.map(p => p._id);\r",
+									"    const uniq = new Set(ids);\r",
+									"    pm.expect(uniq.size).to.equal(ids.length);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"console.log(\"Status:\", pm.response.code);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/produtos/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"produtos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Produtos",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const baseUrl = pm.environment.get('BASE_URL') || 'https://serverest.dev';\r",
+									"const email = pm.environment.get('email');\r",
+									"const password = pm.environment.get('password');\r",
+									"\r",
+									"// sempre gera um token novo (evita expiração)\r",
+									"pm.sendRequest({\r",
+									"  url: `${baseUrl}/login`,\r",
+									"  method: 'POST',\r",
+									"  header: { 'Content-Type': 'application/json' },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({ email, password })\r",
+									"  }\r",
+									"}, (err, res) => {\r",
+									"  if (err) {\r",
+									"    throw new Error('Falha ao logar: ' + err);\r",
+									"  }\r",
+									"  if (!res || res.code !== 200) {\r",
+									"    throw new Error('Login inválido: status ' + (res && res.code));\r",
+									"  }\r",
+									"\r",
+									"  const data = res.json();\r",
+									"  let token = data.authorization || data.token;\r",
+									"  if (!token) {\r",
+									"    throw new Error('Resposta de login sem token. Verifique email/senha e se é admin.');\r",
+									"  }\r",
+									"\r",
+									"  // garante o prefixo Bearer\r",
+									"  if (!/^Bearer\\s/i.test(token)) token = `Bearer ${token}`;\r",
+									"\r",
+									"  // salva e INJETA na requisição atual\r",
+									"  pm.environment.set('token', token);\r",
+									"  pm.request.headers.upsert({ key: 'Authorization', value: token });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json();\r",
+									"pm.environment.set(\"idProduto\", res._id);\r",
+									"console.log(\"Produto salvo com ID:\", res._id);\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{$randomProductName}}\",\r\n  \"preco\": 500,\r\n  \"descricao\": \"{{$randomProductAdjective}}\",\r\n  \"quantidade\": \"500\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/produtos",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Produtos",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const baseUrl = pm.environment.get('BASE_URL') || 'https://serverest.dev';\r",
+									"const email = pm.environment.get('email');\r",
+									"const password = pm.environment.get('password');\r",
+									"\r",
+									"// sempre gera um token novo (evita expiração)\r",
+									"pm.sendRequest({\r",
+									"  url: `${baseUrl}/login`,\r",
+									"  method: 'POST',\r",
+									"  header: { 'Content-Type': 'application/json' },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({ email, password })\r",
+									"  }\r",
+									"}, (err, res) => {\r",
+									"  if (err) {\r",
+									"    throw new Error('Falha ao logar: ' + err);\r",
+									"  }\r",
+									"  if (!res || res.code !== 200) {\r",
+									"    throw new Error('Login inválido: status ' + (res && res.code));\r",
+									"  }\r",
+									"\r",
+									"  const data = res.json();\r",
+									"  let token = data.authorization || data.token;\r",
+									"  if (!token) {\r",
+									"    throw new Error('Resposta de login sem token. Verifique email/senha e se é admin.');\r",
+									"  }\r",
+									"\r",
+									"  // garante o prefixo Bearer\r",
+									"  if (!/^Bearer\\s/i.test(token)) token = `Bearer ${token}`;\r",
+									"\r",
+									"  // salva e INJETA na requisição atual\r",
+									"  pm.environment.set('token', token);\r",
+									"  pm.request.headers.upsert({ key: 'Authorization', value: token });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/produtos/{{idProduto}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"produtos",
+								"{{idProduto}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
