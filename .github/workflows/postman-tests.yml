@@ -11,21 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout do repositório
+      - name: Checkout do repositório
         uses: actions/checkout@v3
 
-      - name: 📦 Instalar o Newman
+      - name: Instalar o Newman
         run: npm install -g newman
 
-      - name: ▶️ Rodar a Collection
+      - name: Rodar a Collection
         run: |
-          newman run ServeRest-Collection.postman_collection.json \
-            -e ServeRest-Environment.postman_environment.json \
-            --reporters cli,html \
-            --reporter-html-export newman-report.html
+          newman run "Testes ServeRest.postman_collection.json" -e 
+          "Variaveis ServeRest.postman_environment.json" -r htmlextra 
+          --reporter-htmlextra-displayProgressBar --reporter-htmlextra-title "Relatório do CEO Johnny Melo"
 
-      - name: 📄 Upload do relatório HTML gerado
+      - name: Upload do relatório HTML gerado
         uses: actions/upload-artifact@v3
         with:
           name: newman-report
-          path: newman-report.html
+          path: newman-report.htmlextra
