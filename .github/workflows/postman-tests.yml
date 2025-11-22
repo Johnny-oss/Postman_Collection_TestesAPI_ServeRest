@@ -19,12 +19,10 @@ jobs:
 
       - name: Rodar a Collection
         run: |
-          newman run "Testes ServeRest.postman_collection.json" -e 
-          "Variaveis ServeRest.postman_environment.json" -r htmlextra 
-          --reporter-htmlextra-displayProgressBar --reporter-htmlextra-title "Relatório do CEO Johnny Melo"
+          newman run "Testes ServeRest.postman_collection.json" -e "Variaveis ServeRest.postman_environment.json" -r htmlextra --reporter-htmlextra-displayProgressBar --reporter-htmlextra-title "Relatório do CEO Johnny Melo"
 
       - name: Upload do relatório HTML gerado
         uses: actions/upload-artifact@v4
         with:
           name: newman-report
-          path: newman-report.htmlextra
+          path: newman-report.html
