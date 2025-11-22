@@ -14,8 +14,10 @@ jobs:
       - name: Checkout do repositório
         uses: actions/checkout@v3
 
-      - name: Instalar o Newman
-        run: npm install -g newman
+      - name: Instalar o Newman e Reporter htmlextra
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
 
       - name: Rodar a Collection
         run: |
