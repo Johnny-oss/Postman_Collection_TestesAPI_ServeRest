@@ -24,7 +24,7 @@ jobs:
           --reporter-htmlextra-displayProgressBar --reporter-htmlextra-title "Relatório do CEO Johnny Melo"
 
       - name: Upload do relatório HTML gerado
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: newman-report
           path: newman-report.htmlextra
