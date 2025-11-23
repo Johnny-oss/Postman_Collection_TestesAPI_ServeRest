@@ -12,10 +12,11 @@ jobs:
 
     steps:
       - name: Checkout do repositório
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Instalar o Newman e Reporter htmlextra
         run: |
+          npm config set prefix /usr/local
           npm install -g newman
           npm install -g newman-reporter-htmlextra
 
