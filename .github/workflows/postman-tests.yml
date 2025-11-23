@@ -23,7 +23,7 @@ jobs:
       - name: Rodar a Collection
         run: |
           ls -la # para listar arquivos e verificar se existe
-          newman run "Testes ServeRest.postman_collection.json" -e "Variaveis ServeRest.postman_environment.json" -r htmlextra --reporter-htmlextra-displayProgressBar --reporter-htmlextra-title "Relatório do CEO Johnny Melo" --reporter-htmlextra-export newman-report.html
+          newman run "Testes ServeRest.postman_collection.json" -e "Variaveis ServeRest.postman_environment.json" -r cli,htmlextra --reporter-htmlextra-displayProgressBar --reporter-htmlextra-title "Relatório do CEO Johnny Melo" --reporter-htmlextra-export newman-report.html
 
       - name: Upload do relatório HTML gerado
         uses: actions/upload-artifact@v4
