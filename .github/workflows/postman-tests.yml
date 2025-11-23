@@ -30,3 +30,4 @@ jobs:
         with:
           name: newman-report
           path: newman-report.html
+        continue-on-error: true
