@@ -237,11 +237,6 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"// ✅ Teste 1 - Status code\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
 									"var schema = {\r",
 									"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
 									"  \"type\": \"object\",\r",
@@ -288,6 +283,11 @@
 									"  // NÃO permite campos extras no body raiz\r",
 									"  \"additionalProperties\": false\r",
 									"}\r",
+									"\r",
+									"// ✅ Teste 1 - Status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
 									"\r",
 									"\r",
 									"// ✅ Teste 2 - Validação do contrato - estrutura\r",
@@ -546,6 +546,7 @@
 									"const baseUrl = pm.environment.get('BASE_URL') || 'https://serverest.dev';\r",
 									"const email = pm.environment.get('email');\r",
 									"const password = pm.environment.get('password');\r",
+									"const idProduto = pm.environment.get('idProduto');\r",
 									"\r",
 									"// sempre gera um token novo (evita expiração)\r",
 									"pm.sendRequest({\r",
@@ -576,10 +577,13 @@
 									"  // salva e INJETA na requisição atual\r",
 									"  pm.environment.set('token', token);\r",
 									"  pm.request.headers.upsert({ key: 'Authorization', value: token });\r",
-									"});"
+									"});\r",
+									"\r",
+									"console.log(\"Produto que será Deletado. ID:\", idProduto);"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
@@ -591,7 +595,8 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
